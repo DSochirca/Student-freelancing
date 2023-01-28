@@ -1,0 +1,26 @@
+image: gradle:7.3.0-jdk11-alpine
+
+stages:
+  - build
+  - staticAnalysis
+  - test
+
+build:
+  stage: build
+  script:
+    gradle build
+
+checkStyle:
+  stage: staticAnalysis
+  script:
+    gradle checkstyleMain checkStyleTest
+
+PMD:
+  stage: staticAnalysis
+  script:
+      gradle pmdMain pmdTest
+
+test:
+  stage: test
+  script:
+    gradle test

@@ -1,0 +1,4 @@
+rootProject.name = 'eurekaServer'
+
+include ":commonUtility"
+project(":commonUtility").projectDir = file("../commonUtility")

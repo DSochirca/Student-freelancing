@@ -1,0 +1,61 @@
+plugins {
+    id 'java'
+    id 'jacoco'
+}
+
+version 'unspecified'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    testImplementation group: 'org.mockito', name: 'mockito-core', version: '3.1.0'
+}
+
+test {
+    useJUnitPlatform()
+
+    jacoco {
+        enabled = true
+        includes = ['envloader.*']
+        excludes = [
+                'envloader.exceptions*',
+                'envloader.EnvLoaderImpl.*',
+        ]
+    }
+
+    jacocoTestReport {
+        dependsOn test
+
+        afterEvaluate {
+            getClassDirectories().setFrom(classDirectories.files.collect {
+                fileTree(dir: it,
+                        exclude: [
+                                '**/envloader/exceptions/*.class',
+                                '**/envloader/EnvLoaderImpl.class',
+                        ]
+                )
+            })
+        }
+    }
+}
+
+jacocoTestCoverageVerification() {
+    dependsOn test
+    violationRules {
+        rule {
+            enabled = true
+            element = 'CLASS'
+            includes = ['envloader.*']
+
+            limit {
+                counter = 'BRANCH'
+                value = 'COVEREDRATIO'
+                minimum = 0.1
+            }
+        }
+    }
+}

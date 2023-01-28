@@ -1,0 +1,4 @@
+rootProject.name = 'usersService'
+
+include ":commonUtility"
+project(":commonUtility").projectDir = file("../commonUtility")

@@ -1,0 +1,39 @@
+version: '3.1'
+services:
+  eureka-server:
+    build: eurekaServer
+    ports:
+      - "8761:8761"
+  authentication-service:
+    build: authenticationService
+    depends_on:
+      - eureka-server
+    ports:
+      - "8080:8080"
+  contract-service:
+    build: contractService
+    depends_on:
+      - eureka-server
+    environment:
+      - JAVA_OPTS=
+        -DEUREKA_SERVER=http://discovery:8761/eureka
+    ports:
+      - "8081:8081"
+  feedback-service:
+    build: feedbackService
+    depends_on:
+      - eureka-server
+    ports:
+      - "8082:8082"
+  offers-requests-service:
+    build: offersRequestsService
+    depends_on:
+      - eureka-server
+    ports:
+      - "8083:8083"
+  users-service:
+    build: usersService
+    depends_on:
+      - eureka-server
+    ports:
+      - "8084:8084"

@@ -1,0 +1,4 @@
+rootProject.name = 'offersRequestsService'
+
+include ":commonUtility"
+project(":commonUtility").projectDir = file("../commonUtility")
